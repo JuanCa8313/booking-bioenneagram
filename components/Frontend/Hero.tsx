@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState } from "react";
+import React from "react";
+import Image from "next/image";
 
 const Hero = () => {
   return (
@@ -94,11 +95,8 @@ const Hero = () => {
             <div className="w-full px-4 lg:w-6/12">
               <div className="lg:ml-auto lg:text-right">
                 <div className="relative z-10 inline-block pt-11 lg:pt-0">
-                  <img
-                    src="https://cdn.tailgrids.com/1.0/assets/images/hero/hero-image-01.png"
-                    alt="hero"
-                    className="max-w-full lg:ml-auto"
-                  />
+                  <Image src={'https://ucarecdn.com/d673768b-7377-4048-be00-2eff379b5c2c/-/scale_crop/300x300/-/rasterize/'} alt="logo" width={100} height={100} />
+
                   <span className="absolute -bottom-8 -left-8 z-[-1]">
                     <svg
                       width="93"
@@ -150,7 +148,7 @@ const SingleImage = ({ href, imgSrc }: { href: string, imgSrc: string }) => {
   return (
     <>
       <a href={href} className="flex w-full items-center justify-center">
-        <img src={imgSrc} alt="brand image" className="h-10 w-full" />
+        <Image src={'https://ucarecdn.com/d673768b-7377-4048-be00-2eff379b5c2c/-/scale_crop/300x300/-/rasterize/'} alt="logo" width={100} height={100} />
       </a>
     </>
   );

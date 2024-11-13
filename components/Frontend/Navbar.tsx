@@ -22,6 +22,7 @@ import {
   XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { ChevronDownIcon, PhoneIcon, PlayCircleIcon } from '@heroicons/react/20/solid'
+import Image from 'next/image'
 
 const products = [
   { name: 'Analytics', description: 'Get a better understanding of your traffic', href: '#', icon: ChartPieIcon },
@@ -44,11 +45,7 @@ export default function Navbar() {
         <div className="flex lg:flex-1">
           <a href="#" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
-            <img
-              alt=""
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-              className="h-8 w-auto"
-            />
+            <Image src={'https://ucarecdn.com/d673768b-7377-4048-be00-2eff379b5c2c/-/scale_crop/300x300/-/rasterize/'} alt="logo" width={100} height={100} />
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -128,11 +125,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
-                alt=""
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
-              />
+              <Image src={'https://ucarecdn.com/d673768b-7377-4048-be00-2eff379b5c2c/-/scale_crop/300x300/-/rasterize/'} alt="logo" width={100} height={100} />
             </a>
             <button
               type="button"
