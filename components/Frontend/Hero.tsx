@@ -148,7 +148,7 @@ const SingleImage = ({ href, imgSrc }: { href: string, imgSrc: string }) => {
   return (
     <>
       <a href={href} className="flex w-full items-center justify-center">
-        <Image src={'https://ucarecdn.com/d673768b-7377-4048-be00-2eff379b5c2c/-/scale_crop/300x300/-/rasterize/'} alt="logo" width={100} height={100} />
+        <Image src={imgSrc} alt="logo" width={100} height={100} />
       </a>
     </>
   );

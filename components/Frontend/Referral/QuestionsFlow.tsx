@@ -16,7 +16,7 @@ const HubSpotBooking = () => (
 );
 
 // Componente para mostrar mensaje final con calendario
-const FinalStep = ({ title }: { title: string }) => (
+const FinalStep = () => (
   <div className="space-y-6">
     {/* <Card className="w-full max-w-lg mx-auto">
       <CardHeader>
@@ -65,7 +65,7 @@ const questions = {
 
 const QuestionFlow = () => {
   const [currentQuestion, setCurrentQuestion] = useState('initial');
-  const [answers, setAnswers] = useState({});
+  const [, setAnswers] = useState({});
   const [showBooking, setShowBooking] = useState(false);
 
   const handleAnswer = (answer: string) => {
