@@ -3,6 +3,13 @@
 import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
+interface ReferralData {
+  clientName: string;
+  status: 'PENDING';
+  referrerEmail?: string;
+  referrerPhone?: string;
+}
+
 export async function createReferral(formData: FormData) {
   const clientName = formData.get('clientName') as string
   const referrerEmail = formData.get('referrerEmail') as string
@@ -29,9 +36,12 @@ export async function createReferral(formData: FormData) {
 
 
   try {
-    const data: any = { clientName, status: 'PENDING' };
-    if (referrerEmail) data.referrerEmail = referrerEmail;
-    if (referrerPhone) data.referrerPhone = referrerPhone;
+    const data: ReferralData = {
+      clientName,
+      status: 'PENDING',
+      ...(referrerEmail ? { referrerEmail } : {}),
+      ...(referrerPhone ? { referrerPhone } : {})
+    };
 
     const referral = await prisma.referral.create({ data });
 
