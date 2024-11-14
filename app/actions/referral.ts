@@ -43,7 +43,7 @@ export async function createReferral(formData: FormData) {
       ...(referrerPhone ? { referrerPhone } : {})
     };
 
-    const referral = await prisma.referral.create({ data });
+    const referral = await prisma.referrals.create({ data });
 
     revalidatePath('/book')
     return { success: true, data: referral }
