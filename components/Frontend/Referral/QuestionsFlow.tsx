@@ -15,21 +15,30 @@ const HubSpotBooking = () => (
   </div>
 );
 
+type QuestionID = 'initial' | 'referred' | 'welcome_back' | 'new_user' | 'referral_form';
+type AnswerOption = 'SI' | 'NO';
+
+interface FinalStepProps {
+  title?: string;
+}
+
 // Componente para mostrar mensaje final con calendario
-const FinalStep = () => (
+const FinalStep = ({ title }: FinalStepProps) => (
   <div className="space-y-6">
-    {/* <Card className="w-full max-w-lg mx-auto">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">
-          {title}
-        </CardTitle>
-      </CardHeader>
-    </Card> */}
+    {title && (
+      <Card className="w-full max-w-lg mx-auto">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl">
+            {title}
+          </CardTitle>
+        </CardHeader>
+      </Card>
+    )}
     <HubSpotBooking />
   </div>
 );
 
-const questions = {
+const questions: Record<QuestionID, { id: string; text: string; options: Partial<Record<AnswerOption, QuestionID>> }> = {
   initial: {
     id: 'initial',
     text: "¿ES TU PRIMERA VEZ CON NOSOTROS?",
@@ -64,11 +73,11 @@ const questions = {
 };
 
 const QuestionFlow = () => {
-  const [currentQuestion, setCurrentQuestion] = useState('initial');
-  const [, setAnswers] = useState({});
+  const [currentQuestion, setCurrentQuestion] = useState<QuestionID>('initial');
+  const [, setAnswers] = useState<Record<string, AnswerOption>>({});
   const [showBooking, setShowBooking] = useState(false);
 
-  const handleAnswer = (answer: string) => {
+  const handleAnswer = (answer: AnswerOption) => {
     setAnswers(prev => ({
       ...prev,
       [currentQuestion]: answer
