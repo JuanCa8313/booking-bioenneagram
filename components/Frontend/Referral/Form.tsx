@@ -1,30 +1,62 @@
-import React from 'react'
-import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { createReferral } from '@/app/actions/referral'
+import React, { useState } from 'react';
+import { z } from 'zod';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { createReferral } from '@/app/actions/referral';
 
 interface ReferralFormProps {
   onSuccess?: () => void;
 }
 
+// Esquema de validación usando Zod
+const referralSchema = z.object({
+  clientName: z.string().min(1, 'El nombre completo es obligatorio'),
+  referrerEmail: z.string().email('El correo no es válido').optional(),
+  referrerPhone: z.string().optional(),
+});
+
+// Tipo para los errores basado en el esquema de Zod
+type ReferralErrors = Partial<Record<keyof z.infer<typeof referralSchema> | 'global', string>>;
+
 export default function ReferralForm({ onSuccess }: ReferralFormProps) {
-  const [errors, setErrors] = useState<any>({})
-  const [success, setSuccess] = useState(false)
+  const [errors, setErrors] = useState<ReferralErrors>({});
+  const [success, setSuccess] = useState(false);
 
-  async function onSubmit(formData: FormData) {
-    const result = await createReferral(formData)
+  async function onSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    const formData = new FormData(event.target as HTMLFormElement);
 
-    if (!result.success) {
-      setErrors(result.errors)
-      return
+    // Extrayendo los valores para validarlos con Zod
+    const data = {
+      clientName: formData.get('clientName') as string,
+      referrerEmail: formData.get('referrerEmail') as string,
+      referrerPhone: formData.get('referrerPhone') as string,
+    };
+
+    // Validación con Zod
+    const parseResult = referralSchema.safeParse(data);
+    if (!parseResult.success) {
+      const fieldErrors = parseResult.error.flatten().fieldErrors;
+      setErrors({
+        clientName: fieldErrors.clientName?.[0],
+        referrerEmail: fieldErrors.referrerEmail?.[0],
+        referrerPhone: fieldErrors.referrerPhone?.[0],
+      });
+      return;
     }
 
-    setSuccess(true)
-    setErrors({})
+    // Llamada a la función asincrónica
+    const result = await createReferral(formData);
+    if (!result.success) {
+      setErrors({ global: result.errors!.global || 'Error al procesar la solicitud' });
+      return;
+    }
+
+    setSuccess(true);
+    setErrors({});
     onSuccess?.();
   }
 
@@ -40,18 +72,16 @@ export default function ReferralForm({ onSuccess }: ReferralFormProps) {
           </Alert>
         </CardContent>
       </Card>
-    )
+    );
   }
 
   return (
     <Card className="w-full max-w-lg mx-auto">
       <CardHeader>
-        <CardTitle className="text-2xl text-center">
-          Información de Referido
-        </CardTitle>
+        <CardTitle className="text-2xl text-center">Información de Referido</CardTitle>
       </CardHeader>
       <CardContent>
-        <form action={onSubmit} className="space-y-6">
+        <form onSubmit={onSubmit} className="space-y-6">
           <div className="space-y-4">
             <div>
               <Label htmlFor="clientName">Tu Nombre Completo *</Label>
@@ -59,7 +89,7 @@ export default function ReferralForm({ onSuccess }: ReferralFormProps) {
                 id="clientName"
                 name="clientName"
                 placeholder="Ej: Juan Pérez"
-                className={errors.clientName ? "border-red-500" : ""}
+                className={errors.clientName ? 'border-red-500' : ''}
               />
               {errors.clientName && (
                 <p className="text-sm text-red-500 mt-1">{errors.clientName}</p>
@@ -67,15 +97,13 @@ export default function ReferralForm({ onSuccess }: ReferralFormProps) {
             </div>
 
             <div>
-              <Label htmlFor="referrerEmail">
-                Correo de quien te refirió
-              </Label>
+              <Label htmlFor="referrerEmail">Correo de quien te refirió</Label>
               <Input
                 id="referrerEmail"
                 name="referrerEmail"
                 type="email"
                 placeholder="Ej: referidor@email.com"
-                className={errors.referrerEmail ? "border-red-500" : ""}
+                className={errors.referrerEmail ? 'border-red-500' : ''}
               />
               {errors.referrerEmail && (
                 <p className="text-sm text-red-500 mt-1">{errors.referrerEmail}</p>
@@ -83,15 +111,13 @@ export default function ReferralForm({ onSuccess }: ReferralFormProps) {
             </div>
 
             <div>
-              <Label htmlFor="referrerPhone">
-                Teléfono de quien te refirió
-              </Label>
+              <Label htmlFor="referrerPhone">Teléfono de quien te refirió</Label>
               <Input
                 id="referrerPhone"
                 name="referrerPhone"
                 type="tel"
                 placeholder="Ej: +1234567890"
-                className={errors.referrerPhone ? "border-red-500" : ""}
+                className={errors.referrerPhone ? 'border-red-500' : ''}
               />
               {errors.referrerPhone && (
                 <p className="text-sm text-red-500 mt-1">{errors.referrerPhone}</p>
@@ -105,11 +131,9 @@ export default function ReferralForm({ onSuccess }: ReferralFormProps) {
             </Alert>
           )}
 
-          <Button type="submit" className="w-full">
-            Enviar información
-          </Button>
+          <Button type="submit" className="w-full">Enviar información</Button>
         </form>
       </CardContent>
     </Card>
-  )
+  );
 }

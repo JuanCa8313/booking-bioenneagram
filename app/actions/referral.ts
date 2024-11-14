@@ -1,12 +1,13 @@
 'use server'
 
-import { prisma } from '@/lib/prisma'
+import prisma from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
 export async function createReferral(formData: FormData) {
   const clientName = formData.get('clientName') as string
   const referrerEmail = formData.get('referrerEmail') as string
   const referrerPhone = formData.get('referrerPhone') as string
+  console.log({ clientName, referrerEmail, referrerPhone })
 
   // Validaciones
   if (!clientName?.trim()) {
@@ -26,15 +27,13 @@ export async function createReferral(formData: FormData) {
     }
   }
 
+
   try {
-    const referral = await prisma.referral.create({
-      data: {
-        clientName,
-        referrerEmail: referrerEmail || null,
-        referrerPhone: referrerPhone || null,
-        status: 'PENDING',
-      },
-    })
+    const data: any = { clientName, status: 'PENDING' };
+    if (referrerEmail) data.referrerEmail = referrerEmail;
+    if (referrerPhone) data.referrerPhone = referrerPhone;
+
+    const referral = await prisma.referral.create({ data });
 
     revalidatePath('/book')
     return { success: true, data: referral }
