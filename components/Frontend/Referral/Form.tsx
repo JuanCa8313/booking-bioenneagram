@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from 'react';
-import { z } from 'zod';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { referralSchema, type ReferralErrors } from '@/lib/validations/referralSchema';
 import { Button } from '@/components/ui/button';
@@ -22,7 +21,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
   const [success, setSuccess] = useState(false);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para indicar envío
-  const [isFormValid, setIsFormValid] = useState(false); // Estado para habilitar/deshabilitar el botón
+  const [, setIsFormValid] = useState(false); // Estado para habilitar/deshabilitar el botón
   const [showTermsDialog, setShowTermsDialog] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
