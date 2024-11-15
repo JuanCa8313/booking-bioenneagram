@@ -5,7 +5,7 @@ import ReferralForm from './Form';
 
 // Componente para el iframe de HubSpot
 const HubSpotBooking = () => (
-  <div className="w-full max-w-4xl mx-auto h-dvh">
+  <div className="w-full max-w-4xl mx-auto h-screen min-h-screen">
     <iframe
       src="https://meetings.hubspot.com/bioenneagramcoach"
       height="100%"
