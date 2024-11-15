@@ -28,6 +28,7 @@ model reservations {
 model Referrals {
   id            String   @id @default(cuid())
   clientName    String
+  clientEmail   String
   referrerEmail String?
   referrerPhone String?
   status        String   @default("PENDING")

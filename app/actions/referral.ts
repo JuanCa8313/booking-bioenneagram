@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache'
 
 interface ReferralData {
   clientName: string;
+  clientEmail: string;
   status: 'PENDING';
   referrerEmail?: string;
   referrerPhone?: string;
@@ -12,15 +13,22 @@ interface ReferralData {
 
 export async function createReferral(formData: FormData) {
   const clientName = formData.get('clientName') as string
+  const clientEmail = formData.get('clientEmail') as string
   const referrerEmail = formData.get('referrerEmail') as string
   const referrerPhone = formData.get('referrerPhone') as string
-  console.log({ clientName, referrerEmail, referrerPhone })
 
-  // Validaciones
+  // Validations
   if (!clientName?.trim()) {
     return {
       success: false,
       errors: { clientName: 'El nombre es requerido' }
+    }
+  }
+
+  if (!clientEmail?.trim()) {
+    return {
+      success: false,
+      errors: { clientEmail: 'El correo electrónico es requerido' }
     }
   }
 
@@ -34,10 +42,10 @@ export async function createReferral(formData: FormData) {
     }
   }
 
-
   try {
     const data: ReferralData = {
       clientName,
+      clientEmail,
       status: 'PENDING',
       ...(referrerEmail ? { referrerEmail } : {}),
       ...(referrerPhone ? { referrerPhone } : {})
