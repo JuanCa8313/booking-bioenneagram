@@ -76,6 +76,7 @@ const QuestionFlow = () => {
   const [currentQuestion, setCurrentQuestion] = useState<QuestionID>('initial');
   const [, setAnswers] = useState<Record<string, AnswerOption>>({});
   const [showBooking, setShowBooking] = useState(false);
+  const [skipToBooking, setSkipToBooking] = useState(false);
 
   const handleAnswer = (answer: AnswerOption) => {
     setAnswers(prev => ({
@@ -95,10 +96,16 @@ const QuestionFlow = () => {
 
   // Si estamos en el formulario de referidos
   if (currentQuestion === 'referral_form') {
+    if (skipToBooking || showBooking) {
+      return <HubSpotBooking />;
+    }
+
     return (
       <div className="space-y-6">
-        <ReferralForm onSuccess={() => setShowBooking(true)} />
-        {showBooking && <HubSpotBooking />}
+        <ReferralForm
+          onSuccess={() => setShowBooking(true)}
+          onSkip={() => setSkipToBooking(true)} // Manejar el caso de "omitir"
+        />
       </div>
     );
   }
