@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
-import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogTitle } from '@/components/ui/alert-dialog';
+import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { createReferral } from '@/app/actions/referral';
 
 interface ReferralFormProps {
@@ -232,22 +232,42 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
         </CardContent>
       </Card>
 
-      <AlertDialog open={showTermsDialog} onOpenChange={setShowTermsDialog}>
-        <AlertDialogContent>
-          <AlertDialogTitle>Términos y Condiciones del Plan de Referidos</AlertDialogTitle>
-          <AlertDialogDescription>
+      <Dialog open={showTermsDialog} onOpenChange={setShowTermsDialog}>
+        <DialogContent>
+          <DialogTitle>Términos y Condiciones del Plan de Referidos</DialogTitle>
+          <DialogDescription className="mb-4">
             Al enviar esta información, aceptas los términos y condiciones del plan de referidos. Puedes revisar los detalles a continuación:
-          </AlertDialogDescription>
-          <div className="space-y-2">
-            <p>
-              [Contenido de los Términos y Condiciones]
-            </p>
+          </DialogDescription>
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+            <div className="space-y-2">
+              <h3 className="font-semibold text-lg">Requisitos de Elegibilidad:</h3>
+              <ul className="list-disc pl-6 space-y-2">
+                <li>La persona que te recomendó BioEnneagram debió de haber estado por lo menos 1 vez en terapia.</li>
+                <li>Este debe ser tu primer contacto con BioEnneagram, no puedes haber tenido relación con algún otro producto de BioEnneagram, por ejemplo:
+                  <ul className="list-disc pl-6 mt-2">
+                    <li>Cursos</li>
+                    <li>Talleres</li>
+                    <li>Retiros</li>
+                    <li>Terapias</li>
+                    <li>Otros productos</li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
           </div>
-          <AlertDialogAction>
-            <Button onClick={() => { setTermsAccepted(true); setShowTermsDialog(false); }}>Aceptar</Button>
-          </AlertDialogAction>
-        </AlertDialogContent>
-      </AlertDialog>
+          <DialogFooter>
+            <Button
+              onClick={() => {
+                setTermsAccepted(true);
+                setShowTermsDialog(false);
+              }}
+              className="w-full"
+            >
+              Aceptar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
