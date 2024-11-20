@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ReferralForm from './Form';
 import HubSpotBooking from '../HubSpotBooking';
+import { Analytics } from '@/lib/segment-analytics';
 
 type QuestionID = 'initial' | 'referred' | 'welcome_back' | 'new_user' | 'referral_form';
 type AnswerOption = 'SI' | 'NO';
@@ -11,7 +12,6 @@ interface FinalStepProps {
   title?: string;
 }
 
-// Componente para mostrar mensaje final con calendario
 const FinalStep = ({ title }: FinalStepProps) => (
   <div className="space-y-6">
     {title && (
@@ -66,70 +66,89 @@ const QuestionFlow = () => {
   const [, setAnswers] = useState<Record<string, AnswerOption>>({});
   const [showBooking, setShowBooking] = useState(false);
   const [skipToBooking, setSkipToBooking] = useState(false);
+  const startTime = useRef(Date.now());
+  const questionSequence = useRef(0);
+
+  useEffect(() => {
+    // segmentAnalytics.page('Questions', 'Initial Question');
+  }, []);
 
   const handleAnswer = (answer: AnswerOption) => {
+    questionSequence.current += 1;
+
     setAnswers(prev => ({
       ...prev,
       [currentQuestion]: answer
     }));
 
+    Analytics.questions.trackAnswer({
+      questionId: currentQuestion,
+      questionText: questions[currentQuestion].text,
+      answer: answer,
+      sequence: questionSequence.current
+    });
+
     const nextQuestion = questions[currentQuestion].options[answer];
     if (nextQuestion) {
       setCurrentQuestion(nextQuestion);
-      // Mostrar el calendario cuando llegamos a una página final
       if (nextQuestion === 'welcome_back' || nextQuestion === 'new_user') {
         setShowBooking(true);
       }
     }
   };
 
-  // Si estamos en el formulario de referidos
+  // Renderizado condicional usando una variable
+  let content;
+
   if (currentQuestion === 'referral_form') {
     if (skipToBooking || showBooking) {
-      return <HubSpotBooking />;
+      content = <HubSpotBooking />;
+    } else {
+      content = (
+        <div className="space-y-6">
+          <ReferralForm
+            onSuccess={() => setShowBooking(true)}
+            onSkip={() => {
+              setSkipToBooking(true);
+              Analytics.forms.trackCompletion({
+                formName: 'ReferralForm',
+                timeToComplete: Date.now() - startTime.current,
+                completionMethod: 'skip'
+              });
+            }}
+          />
+        </div>
+      );
     }
-
-    return (
-      <div className="space-y-6">
-        <ReferralForm
-          onSuccess={() => setShowBooking(true)}
-          onSkip={() => setSkipToBooking(true)} // Manejar el caso de "omitir"
-        />
-      </div>
+  } else if (Object.keys(questions[currentQuestion].options).length === 0) {
+    content = <FinalStep title={questions[currentQuestion].text} />;
+  } else {
+    content = (
+      <Card className="w-full max-w-lg mx-auto">
+        <CardHeader>
+          <CardTitle className="text-center text-2xl">
+            {questions[currentQuestion].text}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center gap-4">
+          <Button
+            onClick={() => handleAnswer('SI')}
+            className="w-32 bg-primary hover:bg-primary-dark"
+          >
+            SI
+          </Button>
+          <Button
+            onClick={() => handleAnswer('NO')}
+            className="w-32 bg-primary hover:bg-primary-dark"
+          >
+            NO
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
-  // Si llegamos a una página final
-  if (Object.keys(questions[currentQuestion].options).length === 0) {
-    return (
-      <FinalStep title={questions[currentQuestion].text} />
-    );
-  }
-
-  // Flujo normal de preguntas
-  return (
-    <Card className="w-full max-w-lg mx-auto">
-      <CardHeader>
-        <CardTitle className="text-center text-2xl">
-          {questions[currentQuestion].text}
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="flex justify-center gap-4">
-        <Button
-          onClick={() => handleAnswer('SI')}
-          className="w-32 bg-primary hover:bg-primary-dark"
-        >
-          SI
-        </Button>
-        <Button
-          onClick={() => handleAnswer('NO')}
-          className="w-32 bg-primary hover:bg-primary-dark"
-        >
-          NO
-        </Button>
-      </CardContent>
-    </Card>
-  );
+  return content;
 };
 
 export default QuestionFlow;

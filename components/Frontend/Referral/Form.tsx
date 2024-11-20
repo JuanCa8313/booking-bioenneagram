@@ -10,6 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { createReferral } from '@/app/actions/referral';
+import { Analytics } from '@/lib/segment-analytics';
 
 interface ReferralFormProps {
   onSuccess?: () => void;
@@ -26,6 +27,24 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
   const [showRewardsDialog, setShowRewardsDialog] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
+
+  const startTime = useRef(Date.now());
+
+  const handleFieldInteraction = (
+    fieldName: string,
+    fieldType: string,
+    action: 'focus' | 'blur' | 'change',
+    value?: string
+  ) => {
+    Analytics.forms.trackInteraction({
+      formName: 'ReferralForm',
+      fieldName,
+      fieldType,
+      action,
+      value
+    });
+  };
+
   useEffect(() => {
     const validateForm = async () => {
       if (formRef.current) {
@@ -33,6 +52,13 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
         const data = Object.fromEntries(formData.entries());
         const parseResult = referralSchema.safeParse({ ...data, termsAccepted });
         setIsFormValid(parseResult.success);
+
+        // Analytics.forms.trackValidation({
+        //   formName: 'ReferralForm',
+        //   isValid: parseResult.success,
+        //   // errors: parseResult.success ? undefined : parseResult.error.flatten().fieldErrors
+        // });
+
       }
     };
 
@@ -50,6 +76,12 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
       const data = Object.fromEntries(formData.entries());
       const parseResult = referralSchema.safeParse({ ...data, termsAccepted });
 
+      Analytics.forms.trackSubmission({
+        formName: 'ReferralForm',
+        formData: data,
+        success: false // Se actualizará después
+      });
+
       if (!parseResult.success) {
         const fieldErrors = parseResult.error.flatten().fieldErrors;
         setErrors({
@@ -60,6 +92,13 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
           termsAccepted: fieldErrors.termsAccepted?.[0],
         });
         setIsSubmitting(false);
+
+        Analytics.forms.trackError({
+          formName: 'ReferralForm',
+          errorType: 'validation',
+          errorMessage: 'Validation failed',
+          fieldName: Object.keys(parseResult.error.flatten().fieldErrors)[0]
+        });
         return;
       }
 
@@ -67,6 +106,19 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
       const result = await createReferral(formData);
 
       if (result.success) {
+
+        Analytics.forms.trackSubmission({
+          formName: 'ReferralForm',
+          formData: data,
+          success: true
+        });
+
+        Analytics.forms.trackCompletion({
+          formName: 'ReferralForm',
+          timeToComplete: Date.now() - startTime.current,
+          completionMethod: 'submit'
+        });
+
         setSuccess(true);
         setErrors({});
         onSuccess?.();
@@ -75,6 +127,12 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
           Object.values(result.errors || {})
             .flat()
             .find((error) => error) || 'Error al procesar la solicitud';
+
+        Analytics.forms.trackError({
+          formName: 'ReferralForm',
+          errorType: 'server',
+          errorMessage: generalError
+        });
 
         setErrors({ global: generalError });
       }
@@ -113,6 +171,8 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                   id="clientName"
                   name="clientName"
                   placeholder="Ej: Juan Pérez"
+                  onFocus={() => handleFieldInteraction('clientName', 'text', 'focus')}
+                  onBlur={() => handleFieldInteraction('clientName', 'text', 'blur')}
                   className={errors.clientName ? 'border-red-500' : ''}
                 />
                 {errors.clientName && (
@@ -126,6 +186,8 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                   id="clientEmail"
                   name="clientEmail"
                   type="email"
+                  onFocus={() => handleFieldInteraction('clientEmail', 'text', 'focus')}
+                  onBlur={() => handleFieldInteraction('clientEmail', 'text', 'blur')}
                   placeholder="Ej: cliente@email.com"
                   className={errors.clientEmail ? 'border-red-500' : ''}
                 />
@@ -140,6 +202,8 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                   id="referrerEmail"
                   name="referrerEmail"
                   type="email"
+                  onFocus={() => handleFieldInteraction('referrerEmail', 'text', 'focus')}
+                  onBlur={() => handleFieldInteraction('referrerEmail', 'text', 'blur')}
                   placeholder="Ej: referidor@email.com"
                   className={errors.referrerEmail ? 'border-red-500' : ''}
                 />
@@ -154,6 +218,8 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                   id="referrerPhone"
                   name="referrerPhone"
                   type="tel"
+                  onFocus={() => handleFieldInteraction('referrerPhone', 'text', 'focus')}
+                  onBlur={() => handleFieldInteraction('referrerPhone', 'text', 'blur')}
                   placeholder="Ej: +1234567890"
                   className={errors.referrerPhone ? 'border-red-500' : ''}
                 />
