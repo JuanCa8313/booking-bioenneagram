@@ -1,16 +1,6 @@
 'use client'
 
 import { useRouter } from 'next/navigation';
-import type { Metadata } from 'next';
-
-export const metadata: Metadata = {
-  title: 'Página No Encontrada | BioEnneagramCoach',
-  description: 'Lo sentimos, la página que estás buscando no existe o ha sido movida.',
-  robots: {
-    index: false,
-    follow: false,
-  }
-}
 
 const NotFound = () => {
   const router = useRouter();
