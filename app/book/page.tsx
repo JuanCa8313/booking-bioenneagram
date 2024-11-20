@@ -30,7 +30,7 @@ export const metadata: Metadata = {
 
 export default function Book() {
   return (
-    <section className="w-auto mx-auto max-md:pt-2">
+    <section className="w-auto mx-auto  bg-gray-50 max-md:pt-2">
       <HeroReferral />
     </section>
   );

@@ -5,7 +5,7 @@ import QuestionFlow from './QuestionsFlow';
 
 const Hero = () => {
   return (
-    <div className="max-h-screen max-w-screen bg-gray-50">
+    <div className="max-h-screen max-w-screen">
       <section className="">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-12">
           <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-12 lg:gap-x-16">
@@ -19,10 +19,10 @@ const Hero = () => {
                 <QuestionFlow />
               </div>
 
-              <div className="flex items-center justify-center mt-10 space-x-6 lg:justify-start sm:space-x-8">
+              <div className="flex items-center justify-center mt-10 space-x-6 sm:space-x-8">
                 <div className="flex items-center">
-                  <p className="text-3xl font-medium text-gray-900 sm:text-4xl font-pj">2943</p>
-                  <p className="ml-3 text-sm text-gray-900 font-pj">Cards<br />Delivered</p>
+                  <p className="text-3xl font-medium text-gray-900 sm:text-4xl font-pj">8</p>
+                  <p className="ml-3 text-sm text-gray-900 font-pj">Empresas<br />Atendidas</p>
                 </div>
 
                 <div className="hidden sm:block">
@@ -36,14 +36,14 @@ const Hero = () => {
                 </div>
 
                 <div className="flex items-center">
-                  <p className="text-3xl font-medium text-gray-900 sm:text-4xl font-pj">$1M+</p>
-                  <p className="ml-3 text-sm text-gray-900 font-pj">Transaction<br />Completed</p>
+                  <p className="text-3xl font-medium text-gray-900 sm:text-4xl font-pj">+620</p>
+                  <p className="ml-3 text-sm text-gray-900 font-pj">Consultas<br />Pacientes</p>
                 </div>
               </div>
             </div>
 
-            <div className='hidden lg:block'>
-              <Image className="h-auto" width={500} height={500} src="https://d33wubrfki0l68.cloudfront.net/d6f1462500f7670e0db6b76b35054a081679a5a0/0ce15/images/hero/5.1/illustration.png" alt="" />
+            <div className='hidden lg:flex justify-center items-center h-screen'>
+              <Image className="h-auto" width={800} height={800} src="/eneagrama-game-1x1.avif" alt="" />
             </div>
           </div>
         </div>
