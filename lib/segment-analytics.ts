@@ -15,7 +15,7 @@ interface FormEvents {
   };
   'Form Submitted': {
     formName: string;
-    formData: Record<string, string | number | boolean>;
+    formData: Record<string, FormDataEntryValue>;
     success: boolean;
   };
   'Form Validated': {
