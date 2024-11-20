@@ -23,6 +23,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false); // Estado para indicar envío
   const [, setIsFormValid] = useState(false); // Estado para habilitar/deshabilitar el botón
   const [showTermsDialog, setShowTermsDialog] = useState(false);
+  const [showRewardsDialog, setShowRewardsDialog] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
@@ -190,7 +191,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
-                          setShowTermsDialog(true);
+                          setShowRewardsDialog(true);
                         }}
                         className="text-blue-500 hover:underline"
                       >
@@ -264,6 +265,64 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
               className="w-full"
             >
               Aceptar
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+      <Dialog open={showRewardsDialog} onOpenChange={setShowRewardsDialog}>
+        <DialogContent>
+          <DialogTitle>Tabla de Reconocimientos y Ganancias</DialogTitle>
+          <DialogDescription className="mb-4">
+            Descubre cómo nuestro programa de referidos puede beneficiarte.
+          </DialogDescription>
+          <div className="space-y-4 max-h-[60vh] overflow-y-auto">
+            <div className="space-y-4">
+              <div className="bg-blue-50 p-4 rounded-lg">
+                <h3 className="font-semibold text-lg mb-2">Programa de Referidos BioEnneagram</h3>
+                <p className="text-sm mb-4">
+                  Ayúdanos a crecer y recibe beneficios por cada referido que se una a nuestra comunidad.
+                </p>
+
+                <div className="space-y-3">
+                  <div className="bg-white p-3 rounded-md shadow-sm">
+                    <h4 className="font-medium text-blue-700">Descuentos para Referidos en Español</h4>
+                    <ul className="list-disc pl-5 text-sm">
+                      <li>10% de descuento en tu próxima sesión por cada referido aprobado</li>
+                      <li>Descuentos acumulables hasta un máximo del 50%</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-white p-3 rounded-md shadow-sm">
+                    <h4 className="font-medium text-blue-700">Beneficios para Referidos en Inglés</h4>
+                    <ul className="list-disc pl-5 text-sm">
+                      <li>15% de descuento en tu próxima sesión por cada referido aprobado</li>
+                      <li>Descuentos especiales para referidos que paguen en dólares</li>
+                      <li>Descuentos acumulables hasta un máximo del 75%</li>
+                    </ul>
+                  </div>
+
+                  <div className="bg-gray-50 p-3 rounded-md">
+                    <h4 className="font-medium text-gray-700">Seguimiento de Referidos</h4>
+                    <p className="text-sm">
+                      Para consultar el estado de tus referidos (aprobados, pendientes o cancelados),
+                      contáctanos directamente por WhatsApp.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="text-sm text-gray-600 italic">
+                * Los descuentos son aplicables únicamente a sesiones futuras.
+                * El programa de referidos está sujeto a cambios sin previo aviso.
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              onClick={() => setShowRewardsDialog(false)}
+              className="w-full"
+            >
+              Cerrar
             </Button>
           </DialogFooter>
         </DialogContent>
