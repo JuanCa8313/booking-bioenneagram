@@ -15,7 +15,7 @@ interface FormEvents {
   };
   'Form Submitted': {
     formName: string;
-    formData: Record<string, any>;
+    formData: Record<string, string | number | boolean>;
     success: boolean;
   };
   'Form Validated': {
@@ -81,7 +81,7 @@ class AnalyticsService {
   page(
     category?: string,
     name?: string,
-    properties?: Record<string, any>
+    properties?: Record<string, string | number | boolean>
   ) {
     try {
       this.client.page(category, name, properties);
