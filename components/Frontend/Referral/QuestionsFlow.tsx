@@ -2,18 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ReferralForm from './Form';
-
-// Componente para el iframe de HubSpot
-const HubSpotBooking = () => (
-  <div className="w-full max-w-4xl mx-auto h-screen min-h-screen">
-    <iframe
-      src="https://meetings.hubspot.com/bioenneagramcoach"
-      height="100%"
-      width="100%"
-      title="Agendar Cita"
-    />
-  </div>
-);
+import HubSpotBooking from '../HubSpotBooking';
 
 type QuestionID = 'initial' | 'referred' | 'welcome_back' | 'new_user' | 'referral_form';
 type AnswerOption = 'SI' | 'NO';
@@ -62,7 +51,7 @@ const questions: Record<QuestionID, { id: string; text: string; options: Partial
   },
   new_user: {
     id: 'new_user',
-    text: "¡BIENVENIDO A NUESTRA PLATAFORMA!",
+    text: "¡BIENVENIDO A BIOENNEGRAM!",
     options: {}
   },
   referral_form: {
