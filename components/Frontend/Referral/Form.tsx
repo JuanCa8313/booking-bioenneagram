@@ -10,7 +10,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { createReferral } from '@/app/actions/referral';
-import { Analytics } from '@/lib/segment-analytics';
+import { Analytics, segmentAnalytics } from '@/lib/segment-analytics';
 
 interface ReferralFormProps {
   onSuccess?: () => void;
@@ -27,6 +27,13 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
   const [showRewardsDialog, setShowRewardsDialog] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
+  segmentAnalytics.page('Book Page', {
+    content_name: 'Bioenneagram Referral Form',
+    title: 'Bioenneagram Referral Form',
+    page_title: 'Bioenneagram Referral Form',
+    page_path: '/book/referral-form',
+    path: '/book/referral-form',
+  });
 
   const startTime = useRef(Date.now());
 
