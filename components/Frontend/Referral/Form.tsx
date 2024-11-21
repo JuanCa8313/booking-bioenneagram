@@ -27,13 +27,15 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
   const [showRewardsDialog, setShowRewardsDialog] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
-  segmentAnalytics.page('Book Page', {
-    content_name: 'Bioenneagram Referral Form',
-    title: 'Bioenneagram Referral Form',
-    page_title: 'Bioenneagram Referral Form',
-    page_path: '/book/referral-form',
-    path: '/book/referral-form',
-  });
+  useEffect(() => {
+    segmentAnalytics.page('Book Page', {
+      content_name: 'Bioenneagram Referral Form',
+      title: 'Bioenneagram Referral Form',
+      page_title: 'Bioenneagram Referral Form',
+      page_path: '/book/referral-form',
+      path: '/book/referral-form',
+    });
+  }, []);
 
   const startTime = useRef(Date.now());
 
