@@ -40,7 +40,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
   const handleFieldInteraction = (
     fieldName: string,
     fieldType: string,
-    action: 'focus' | 'blur' | 'change',
+    action: 'focus' | 'blur' | 'click',
     value?: string
   ) => {
     Analytics.forms.trackInteraction({
@@ -250,6 +250,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
+                          handleFieldInteraction('termsDialog', 'link', 'click')
                           setShowTermsDialog(true);
                         }}
                         className="text-blue-500 hover:underline"
@@ -264,6 +265,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                         href="#"
                         onClick={(e) => {
                           e.preventDefault();
+                          handleFieldInteraction('rewardsDialog', 'link', 'click')
                           setShowRewardsDialog(true);
                         }}
                         className="text-blue-500 hover:underline"
