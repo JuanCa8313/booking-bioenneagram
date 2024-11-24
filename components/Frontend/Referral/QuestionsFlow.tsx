@@ -134,7 +134,7 @@ const QuestionCard = ({
 // Main Component
 const QuestionFlow = () => {
   const [currentQuestion, setCurrentQuestion] = useState<QuestionID>('initial');
-  const [answers, setAnswers] = useState<Record<string, AnswerOption>>({});
+  const [, setAnswers] = useState<Record<string, AnswerOption>>({});
   const [showBooking, setShowBooking] = useState(false);
   const [skipToBooking, setSkipToBooking] = useState(false);
   const startTime = useRef(Date.now());
