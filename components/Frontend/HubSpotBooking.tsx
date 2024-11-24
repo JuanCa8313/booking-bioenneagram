@@ -1,16 +1,35 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
+import { Card } from '@/components/ui/card';
+import { Loader2 } from 'lucide-react';
+
+type LoadingState = 'loading' | 'error' | 'loaded';
+
+const HUBSPOT_MEETING_URL = 'https://meetings.hubspot.com/bioenneagramcoach';
+const LOADING_TIMEOUT = 10000; // 10 seconds
 
 const HubSpotBooking = () => {
-  const [loadingState, setLoadingState] = useState<'loading' | 'error' | 'loaded'>('loading');
+  const [loadingState, setLoadingState] = useState<LoadingState>('loading');
   const { toast } = useToast();
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const loadingTimerRef = useRef<NodeJS.Timeout>();
 
-  const handleLoadError = () => {
+  const handleRetry = useCallback(() => {
+    setLoadingState('loading');
+    if (iframeRef.current) {
+      iframeRef.current.src = HUBSPOT_MEETING_URL;
+    }
+  }, []);
+
+  const handleOpenInNewTab = useCallback(() => {
+    window.open(HUBSPOT_MEETING_URL, '_blank', 'noopener,noreferrer');
+  }, []);
+
+  const handleLoadError = useCallback(() => {
     setLoadingState('error');
     toast({
       variant: 'destructive',
@@ -27,71 +46,88 @@ const HubSpotBooking = () => {
         </div>
       ),
     });
-  };
+  }, [toast, handleRetry, handleOpenInNewTab]);
+
+  const handleLoad = useCallback(() => {
+    setLoadingState('loaded');
+    if (loadingTimerRef.current) {
+      clearTimeout(loadingTimerRef.current);
+    }
+  }, []);
 
   useEffect(() => {
-    const loadingTimer = setTimeout(() => {
-      // Si después de 10 segundos no ha cargado, mostrar error
+    loadingTimerRef.current = setTimeout(() => {
       if (loadingState === 'loading') {
         handleLoadError();
       }
-    }, 10000);
+    }, LOADING_TIMEOUT);
 
-    return () => clearTimeout(loadingTimer);
-  }, [loadingState]);
-
-  const handleRetry = () => {
-    setLoadingState('loading');
-  };
-
-  const handleOpenInNewTab = () => {
-    window.open('https://meetings.hubspot.com/bioenneagramcoach', '_blank');
-  };
+    return () => {
+      if (loadingTimerRef.current) {
+        clearTimeout(loadingTimerRef.current);
+      }
+    };
+  }, [loadingState, handleLoadError]);
 
   if (loadingState === 'error') {
     return (
-      <div className="w-full max-w-lg mx-auto p-4">
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4 text-center">
-          <h2 className="text-xl font-bold text-red-600 mb-4">
-            Error al Cargar el Calendario
-          </h2>
-          <p className="mb-4 text-red-700">
-            No se pudo cargar el calendario de reservas. Por favor, intenta nuevamente.
-          </p>
+      <Card className="w-full max-w-lg mx-auto p-6">
+        <div className="text-center space-y-4">
+          <div className="space-y-2">
+            <h2 className="text-xl font-semibold text-red-600">
+              Error al Cargar el Calendario
+            </h2>
+            <p className="text-sm text-gray-600">
+              No se pudo cargar el calendario de reservas. Por favor, intenta nuevamente.
+            </p>
+          </div>
           <div className="flex justify-center gap-4">
-            <Button onClick={handleRetry} variant="default">
+            <Button
+              onClick={handleRetry}
+              variant="default"
+              className="min-w-[120px]"
+            >
               Reintentar
             </Button>
-            <Button onClick={handleOpenInNewTab} variant="secondary">
+            <Button
+              onClick={handleOpenInNewTab}
+              variant="secondary"
+              className="min-w-[120px]"
+            >
               Abrir en Nueva Pestaña
             </Button>
           </div>
         </div>
-      </div>
+      </Card>
     );
   }
 
   return (
-    <>
-      <div className="w-full max-w-4xl mx-auto h-screen min-h-screen relative">
+    <div className="relative w-full">
+      <div className="w-full max-w-4xl mx-auto h-screen min-h-[600px] relative">
         {loadingState === 'loading' && (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/50 z-10">
-            <p>Cargando calendario...</p>
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10 space-y-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-sm text-gray-600 animate-pulse">
+              Cargando calendario...
+            </p>
           </div>
         )}
         <iframe
           ref={iframeRef}
-          src="https://meetings.hubspot.com/bioenneagramcoach"
+          src={HUBSPOT_MEETING_URL}
           height="100%"
           width="100%"
           title="Agendar Cita"
-          onLoad={() => setLoadingState('loaded')}
+          onLoad={handleLoad}
           onError={handleLoadError}
-          className={loadingState === 'loading' ? 'opacity-50' : 'opacity-100'}
+          className={`w-full h-full transition-opacity duration-300 ${loadingState === 'loading' ? 'opacity-0' : 'opacity-100'
+            }`}
+          allow="camera; microphone; autoplay; clipboard-write; encrypted-media"
         />
       </div>
       <Toaster />
-    </>
+    </div>
   );
 };
 

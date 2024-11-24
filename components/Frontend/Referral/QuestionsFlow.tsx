@@ -174,7 +174,7 @@ const QuestionFlow = () => {
 
   if (currentQuestion === 'referral_form') {
     if (skipToBooking || showBooking) {
-      return <HubSpotBooking />;
+      return <FinalStep title="¡BIENVENIDO A BIOENNEGRAM!" />;
     }
 
     return (
