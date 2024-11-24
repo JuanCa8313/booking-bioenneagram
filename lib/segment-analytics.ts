@@ -1,8 +1,19 @@
-// lib/analytics.ts
+// lib/segment-analytics.ts
 import { AnalyticsBrowser } from '@segment/analytics-next';
 
-// Constante para la WRITE_KEY
 const SEGMENT_WRITE_KEY = process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY;
+
+let segmentAnalytics: ReturnType<typeof AnalyticsBrowser.load>;
+
+// Verificar si estamos en el cliente
+const isClient = typeof window !== 'undefined';
+
+// Inicializar analytics solo en el cliente
+if (isClient) {
+  segmentAnalytics = AnalyticsBrowser.load({
+    writeKey: SEGMENT_WRITE_KEY!,
+  });
+}
 
 // Interfaces para eventos de formulario
 interface FormEvents {
@@ -42,61 +53,49 @@ interface FormEvents {
   };
 }
 
+class AnalyticsService {
+  track<K extends keyof FormEvents>(eventName: K, properties: FormEvents[K]) {
+    if (isClient) {
+      try {
+        segmentAnalytics.track(eventName, properties);
+        if (process.env.NODE_ENV === 'development') {
+          console.log(`Event Tracked: ${eventName}`, properties);
+        }
+      } catch (error) {
+        console.error('Tracking Error:', error);
+      }
+    }
+  }
+
+  page(
+    category?: string,
+    name?: string,
+    properties?: Record<string, string | number | boolean>
+  ) {
+    if (isClient) {
+      try {
+        segmentAnalytics.page(category, name, properties);
+      } catch (error) {
+        console.error('Page Tracking Error:', error);
+      }
+    }
+  }
+}
+
 // Singleton para mantener una única instancia del servicio
 class AnalyticsInstance {
   private static instance: AnalyticsService | null = null;
 
   static getInstance(): AnalyticsService {
     if (!this.instance) {
-      this.instance = new AnalyticsService(SEGMENT_WRITE_KEY!);
+      this.instance = new AnalyticsService();
     }
     return this.instance;
   }
 }
 
-// Clase principal de Analytics
-class AnalyticsService {
-  private client: ReturnType<typeof AnalyticsBrowser.load>;
-
-  constructor(writeKey: string) {
-    this.client = AnalyticsBrowser.load({ writeKey });
-  }
-
-  // Método genérico para trackear eventos
-  track<K extends keyof FormEvents>(
-    eventName: K,
-    properties: FormEvents[K]
-  ) {
-    try {
-      this.client.track(eventName, properties);
-      if (process.env.NODE_ENV === 'development') {
-        console.log(`Event Tracked: ${eventName}`, properties);
-      }
-    } catch (error) {
-      console.error('Tracking Error:', error);
-    }
-  }
-
-  // Método para trackear páginas
-  page(
-    category?: string,
-    name?: string,
-    properties?: Record<string, string | number | boolean>
-  ) {
-    try {
-      this.client.page(category, name, properties);
-    } catch (error) {
-      console.error('Page Tracking Error:', error);
-    }
-  }
-}
-
 // Helper para obtener la instancia del servicio
 const getAnalyticsService = () => AnalyticsInstance.getInstance();
-
-export const segmentAnalytics = AnalyticsBrowser.load({
-  writeKey: process.env.NEXT_PUBLIC_SEGMENT_WRITE_KEY!,
-});
 
 // Exportar la API pública
 export const Analytics = {
@@ -125,5 +124,5 @@ export const Analytics = {
   }
 };
 
-// Tipo exportado para uso en otros componentes
+export { segmentAnalytics };
 export type { FormEvents };
