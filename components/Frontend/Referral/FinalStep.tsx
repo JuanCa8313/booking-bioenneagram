@@ -1,6 +1,6 @@
 'use client';
-import { useState, useEffect } from 'react';
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
+import { useState } from 'react';
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogAction } from '@/components/ui/alert-dialog';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import HubSpotBooking from '../HubSpotBooking';
 import { usePageTracking } from '@/hooks/usePageTracking';
