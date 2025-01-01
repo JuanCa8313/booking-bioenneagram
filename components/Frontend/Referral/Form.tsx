@@ -94,14 +94,15 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
       });
 
       if (!parseResult.success) {
-        const fieldErrors = parseResult.error.flatten().fieldErrors;
-        setErrors({
-          clientName: fieldErrors.clientName?.[0],
-          clientEmail: fieldErrors.clientEmail?.[0],
-          referrerEmail: fieldErrors.referrerEmail?.[0],
-          referrerPhone: fieldErrors.referrerPhone?.[0],
-          termsAccepted: fieldErrors.termsAccepted?.[0],
+        const issues = parseResult.error.issues;
+        const newErrors: ReferralErrors = {};
+
+        issues.forEach((issue) => {
+          const field = issue.path[0] as keyof ReferralErrors || 'global';
+          newErrors[field] = issue.message;
         });
+
+        setErrors(newErrors);
         setIsSubmitting(false);
 
         Analytics.forms.trackError({
@@ -231,7 +232,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                   type="tel"
                   onFocus={() => handleFieldInteraction('referrerPhone', 'text', 'focus')}
                   onBlur={() => handleFieldInteraction('referrerPhone', 'text', 'blur')}
-                  placeholder="Ej: +1234567890"
+                  placeholder="Ej: (+57) 312 456 7890"
                   className={errors.referrerPhone ? 'border-red-500' : ''}
                 />
                 {errors.referrerPhone && (
