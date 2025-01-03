@@ -36,11 +36,16 @@ export const FinalStep = ({ title }: FinalStepProps) => {
             <AlertDialogHeader>
               <AlertDialogTitle>‼️ Importante ‼️</AlertDialogTitle>
               <AlertDialogDescription>
-                Recuerda que debes de escribirnos al {' '}<a
+                Queremos informarte con mucho cariño que, a partir de este año, para poder agendar tu cita con nosotros, será necesario realizar un depósito del 50% del valor de la sesión. Este paso lo podrás completar fácilmente escribiéndonos por el chat de {' '}<a
                   href="https://api.whatsapp.com/send?phone=573004481819&text=Hola%20%F0%9F%91%8B%2C%20deseo%20pagar%20una%20consulta%20que%20ya%20agend%C3%A9."
                   target="_blank"
                   className="text-blue-500 hover:underline"
-                >WhatsApp</a>{' '} ya que debes de pagar al menos el 50% de la consulta para que pueda ser aprobada. Si no se realiza el pago, faltando un día para la cita, esta será cancelada automáticamente.
+                >WhatsApp</a>{' '} una vez que elijas tu espacio.
+                <br /><br />
+                Esta medida nos permite organizar mejor nuestra agenda y asegurarte un servicio de calidad. Estamos aquí para acompañarte en tu proceso de transformación y desarrollo personal.
+                <br /><br />
+                ¡Gracias por tu confianza! 💙<br />
+                Equipo BioEnneagram Coach
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
