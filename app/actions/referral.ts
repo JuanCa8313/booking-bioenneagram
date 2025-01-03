@@ -29,6 +29,7 @@ export async function createReferral(formData: FormData) {
         clientEmail: validatedData.clientEmail,
         termsAccepted: validatedData.termsAccepted,
         status: 'PENDING',
+        ...(validatedData.referrerName ? { referrerName: validatedData.referrerName } : {}),
         ...(validatedData.referrerEmail ? { referrerEmail: validatedData.referrerEmail } : {}),
         ...(validatedData.referrerPhone ? { referrerPhone: validatedData.referrerPhone } : {}),
       },

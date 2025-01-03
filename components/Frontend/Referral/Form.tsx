@@ -209,6 +209,22 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
               </div>
 
               <div>
+                <Label htmlFor="referrerName">* Nombre completo de quien te refirió *</Label>
+                <Input
+                  id="referrerName"
+                  name="referrerName"
+                  type="email"
+                  onFocus={() => handleFieldInteraction('referrerName', 'text', 'focus')}
+                  onBlur={() => handleFieldInteraction('referrerName', 'text', 'blur')}
+                  placeholder="Ej: Pedro Perez"
+                  className={errors.referrerName ? 'border-red-500' : ''}
+                />
+                {errors.referrerName && (
+                  <p className="text-sm text-red-500 mt-1">{errors.referrerName}</p>
+                )}
+              </div>
+
+              <div>
                 <Label htmlFor="referrerEmail">Correo de quien te refirió</Label>
                 <Input
                   id="referrerEmail"

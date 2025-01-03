@@ -31,10 +31,11 @@ model Referrals {
   clientEmail   String
   referrerEmail String?
   referrerPhone String?
-  termsAccepted Boolean?  @default(false)
+  termsAccepted Boolean? @default(false)
   status        String   @default("PENDING")
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  referrerName  String?
 
   @@index([referrerEmail])
   @@index([referrerPhone])
