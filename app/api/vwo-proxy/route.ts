@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
 }
 
 // Manejador para las peticiones OPTIONS (necesario para CORS)
-export async function OPTIONS(request: NextRequest) {
+export async function OPTIONS() {
   return NextResponse.json(
     {},
     {
