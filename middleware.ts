@@ -13,7 +13,7 @@ export function middleware(request: NextRequest) {
     form-action 'self';
     frame-ancestors 'none';
     upgrade-insecure-requests;
-    connect-src 'self' https://api.segment.io https://cdn.segment.com https://l.clarity.ms https://analytics.google.com https://stats.g.doubleclick.net https://www.google.com;
+    connect-src 'self' https://api.segment.io https://cdn.segment.com https://l.clarity.ms https://analytics.google.com https://stats.g.doubleclick.net https://www.google.com https://google.com https://www.google-analytics.com;
     frame-src 'self' https://td.doubleclick.net https://www.googletagmanager.com https://meetings.hubspot.com;
 `
   // Replace newline characters and spaces
