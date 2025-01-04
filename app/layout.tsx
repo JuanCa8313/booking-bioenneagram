@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from 'next/headers'
 import { GoogleTagManager } from '@next/third-parties/google'
 import localFont from "next/font/local";
 import "./globals.css";
@@ -19,11 +20,14 @@ export const metadata: Metadata = {
   description: "Descubre tu potencial con BioEnneagramCoach, usando Biodescodificación y Eneagrama",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const nonce = (await headers()).get('x-nonce')!
+
   return (
     <html lang="en">
       <body
@@ -31,7 +35,7 @@ export default function RootLayout({
       >
         {children}
       </body>
-      <GoogleTagManager gtmId="GTM-KGBLNSF" />
+      <GoogleTagManager gtmId="GTM-KGBLNSF" nonce={nonce} />
     </html>
   );
 }
