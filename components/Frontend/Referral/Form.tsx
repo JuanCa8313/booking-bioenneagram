@@ -213,7 +213,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
                 <Input
                   id="referrerName"
                   name="referrerName"
-                  type="email"
+                  type="text"
                   onFocus={() => handleFieldInteraction('referrerName', 'text', 'focus')}
                   onBlur={() => handleFieldInteraction('referrerName', 'text', 'blur')}
                   placeholder="Ej: Pedro Perez"
