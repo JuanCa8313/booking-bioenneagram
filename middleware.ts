@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
     default-src 'self';
     script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
     style-src 'self' 'nonce-${nonce}';
-    img-src 'self' blob: data: https://c.clarity.ms https://www.google.com.co https://www.google.com;
+    img-src 'self' blob: data: https://c.clarity.ms https://www.google.com.co https://www.google.com https://c.bing.com/c.gif;
     font-src 'self';
     object-src 'none';
     base-uri 'self';
@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
     frame-ancestors 'none';
     upgrade-insecure-requests;
     connect-src 'self' https://api.segment.io https://cdn.segment.com https://l.clarity.ms https://analytics.google.com https://stats.g.doubleclick.net https://www.google.com;
-    frame-src 'self' https://td.doubleclick.net https://www.googletagmanager.com;
+    frame-src 'self' https://td.doubleclick.net https://www.googletagmanager.com https://meetings.hubspot.com;
 `
   // Replace newline characters and spaces
   const contentSecurityPolicyHeaderValue = cspHeader
