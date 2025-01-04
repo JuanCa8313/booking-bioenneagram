@@ -1,25 +1,25 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { headers } from 'next/headers'
 import { Button } from '@/components/ui/button';
 import { Toaster } from '@/components/ui/toaster';
 import { useToast } from '@/hooks/use-toast';
 import { Card } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import { useNonce } from '@/app/context/NonceContext';
 
 type LoadingState = 'loading' | 'error' | 'loaded';
 
 const HUBSPOT_MEETING_URL = 'https://meetings.hubspot.com/bioenneagramcoach';
 const LOADING_TIMEOUT = 10000; // 10 seconds
 
-const HubSpotBooking = async () => {
+const HubSpotBooking = () => {
   const [loadingState, setLoadingState] = useState<LoadingState>('loading');
   const { toast } = useToast();
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const loadingTimerRef = useRef<NodeJS.Timeout>();
 
-  const nonce = (await headers()).get('x-nonce')!
+  const nonce = useNonce();
 
   const handleRetry = useCallback(() => {
     setLoadingState('loading');
@@ -127,7 +127,7 @@ const HubSpotBooking = async () => {
           className={`w-full h-full transition-opacity duration-300 ${loadingState === 'loading' ? 'opacity-0' : 'opacity-100'
             }`}
           allow="camera; microphone; autoplay; clipboard-write; encrypted-media"
-          nonce={nonce}
+          nonce={nonce || undefined}
         />
       </div>
       <Toaster />

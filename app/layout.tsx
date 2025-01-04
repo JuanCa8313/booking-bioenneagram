@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from 'next/headers'
 import { GoogleTagManager } from '@next/third-parties/google'
+import { NonceProvider } from './context/NonceContext';
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -33,7 +34,9 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <NonceProvider nonce={nonce}>
+          {children}
+        </NonceProvider>
       </body>
       <GoogleTagManager gtmId="GTM-KGBLNSF" nonce={nonce} />
     </html>
