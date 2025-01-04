@@ -4,7 +4,7 @@ export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString('base64')
   const cspHeader = `
     default-src 'self';
-    script-src 'self' 'nonce-${nonce}' 'strict-dynamic';
+    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'unsafe-hashes';
     style-src 'self' 'nonce-${nonce}';
     img-src 'self' blob: data: https://c.clarity.ms https://www.google.com.co https://www.google.com https://c.bing.com/c.gif https://dev.visualwebsiteoptimizer.com;
     font-src 'self';
