@@ -13,6 +13,7 @@ export function middleware(request: NextRequest) {
     form-action 'self';
     frame-ancestors 'none';
     upgrade-insecure-requests;
+    connect-src 'self' https://api.segment.io https://cdn.segment.com https://l.clarity.ms;
 `
   // Replace newline characters and spaces
   const contentSecurityPolicyHeaderValue = cspHeader
