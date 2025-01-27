@@ -9,7 +9,7 @@ const Hero = () => {
     <div className="max-h-screen max-w-screen">
       <section className="">
         <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-12">
-          <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-12 lg:gap-x-16">
+          <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-8 lg:gap-x-16">
             <div>
               <div className="text-center lg:text-left">
                 <Link href="https://www.bioenneagram.com/" className="block" target='_blank'>
@@ -45,7 +45,7 @@ const Hero = () => {
               </div>
             </div>
 
-            <div className='lg:flex justify-center items-center lg:h-screen'>
+            <div className='lg:flex justify-center items-center lg:h-screen pb-4 lg:pb-0'>
               <Link href={"https://events.bioenneagram.com/cursos/curso-eneagrama-game"} target='_blank'>
                 <Image className="h-auto shadow-2xl transition duration-300 ease-in-out hover:opacity-100 hover:scale-105 hover:shadow-lg" width={800} height={800} src="/eneagrama-game-1x1.avif" alt="" />
               </Link>
