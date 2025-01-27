@@ -12,7 +12,7 @@ const Hero = () => {
           <div className="grid max-w-lg grid-cols-1 mx-auto lg:max-w-full lg:items-center lg:grid-cols-2 gap-y-12 lg:gap-x-16">
             <div>
               <div className="text-center lg:text-left">
-                <Link href="https://www.bioenneagram.com/" className="block">
+                <Link href="https://www.bioenneagram.com/" className="block" target='_blank'>
                   <div className='flex flex-col md:flex-row justify-center items-center '>
                     <Image src={'https://ucarecdn.com/d673768b-7377-4048-be00-2eff379b5c2c/-/scale_crop/300x300/-/rasterize/'} alt="logo" width={100} height={100} />
                     <h1 className="text-4xl font-bold leading-tight text-gray-900 sm:text-5xl sm:leading-tight lg:leading-tight lg:text-6xl font-pj mb-4">BioEnneagram</h1>
@@ -46,7 +46,9 @@ const Hero = () => {
             </div>
 
             <div className='hidden lg:flex justify-center items-center h-screen'>
-              <Image className="h-auto" width={800} height={800} src="/eneagrama-game-1x1.avif" alt="" />
+              <Link href={"https://events.bioenneagram.com/cursos/curso-eneagrama-game"} target='_blank'>
+                <Image className="h-auto shadow-2xl transition duration-300 ease-in-out hover:opacity-100 hover:scale-105 hover:shadow-lg" width={800} height={800} src="/eneagrama-game-1x1.avif" alt="" />
+              </Link>
             </div>
           </div>
         </div>
