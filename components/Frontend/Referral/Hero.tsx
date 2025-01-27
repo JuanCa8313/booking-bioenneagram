@@ -45,7 +45,7 @@ const Hero = () => {
               </div>
             </div>
 
-            <div className='hidden lg:flex justify-center items-center h-screen'>
+            <div className='lg:flex justify-center items-center lg:h-screen'>
               <Link href={"https://events.bioenneagram.com/cursos/curso-eneagrama-game"} target='_blank'>
                 <Image className="h-auto shadow-2xl transition duration-300 ease-in-out hover:opacity-100 hover:scale-105 hover:shadow-lg" width={800} height={800} src="/eneagrama-game-1x1.avif" alt="" />
               </Link>
