@@ -1,6 +1,8 @@
 import HeroReferral from "@/components/Frontend/Referral/Hero";
 import type { Metadata } from 'next'
 
+export const runtime = 'edge';
+
 export const metadata: Metadata = {
   title: 'Agendar Sesión | Alex Zapata',
   description: 'Reserva tu sesión personalizada con Alex Zapata. Descubre tu tipo de personalidad, desarrolla autoconocimiento y transforma tu vida con coaching profesional.',

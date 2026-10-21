@@ -5,6 +5,8 @@ import { NonceProvider } from './context/NonceContext';
 import localFont from "next/font/local";
 import "./globals.css";
 
+export const runtime = 'edge';
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -19,6 +21,10 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "Alex Zapata | Agenda de Citas & Coaching",
   description: "Agenda tu sesión personalizada de autoconocimiento y coaching con Alex Zapata.",
+  icons: {
+    icon: '/icon.svg',
+    apple: '/apple-icon.png',
+  },
 };
 
 export default async function RootLayout({
