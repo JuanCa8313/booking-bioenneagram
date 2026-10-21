@@ -17,8 +17,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "BioEnneagram Coach | Coaching Personal",
-  description: "Descubre tu potencial con BioEnneagramCoach, usando Biodescodificación y Eneagrama",
+  title: "Alex Zapata | Agenda de Citas & Coaching",
+  description: "Agenda tu sesión personalizada de autoconocimiento y coaching con Alex Zapata.",
 };
 
 export default async function RootLayout({

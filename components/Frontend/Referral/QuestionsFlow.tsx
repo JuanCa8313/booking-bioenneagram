@@ -78,7 +78,7 @@ const usePageTracking = (pageName: string, pageData: Record<string, string>) => 
 
 // Components
 const FinalStep = ({ title }: FinalStepProps) => {
-  usePageTracking('Bioenneagram Final Step Calendar', {
+  usePageTracking('Alex Zapata Final Step Calendar', {
     path: '/book/final-step'
   });
 
@@ -105,7 +105,7 @@ const QuestionCard = ({
   question: Question,
   onAnswer: (answer: AnswerOption) => void
 }) => {
-  usePageTracking(`Bioenneagram Step ${question.step}`, {
+  usePageTracking(`Alex Zapata Step ${question.step}`, {
     path: `/book/step-${question.step}`
   });
 

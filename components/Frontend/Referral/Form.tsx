@@ -30,9 +30,9 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       segmentAnalytics.page('Book Page', {
-        content_name: 'Bioenneagram Referral Form',
-        title: 'Bioenneagram Referral Form',
-        page_title: 'Bioenneagram Referral Form',
+        content_name: 'Alex Zapata Referral Form',
+        title: 'Alex Zapata Referral Form',
+        page_title: 'Alex Zapata Referral Form',
         page_path: '/book/referral-form',
         path: '/book/referral-form',
       });
@@ -339,8 +339,8 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
             <div className="space-y-2">
               <h3 className="font-semibold text-lg">Requisitos de Elegibilidad:</h3>
               <ul className="list-disc pl-6 space-y-2">
-                <li>La persona que te recomendó BioEnneagram debió de haber estado por lo menos 1 vez en terapia.</li>
-                <li>Este debe ser tu primer contacto con BioEnneagram, no puedes haber tenido relación con algún otro producto de BioEnneagram, por ejemplo:
+                <li>La persona que te recomendó con Alex Zapata debió de haber estado por lo menos 1 vez en terapia.</li>
+                <li>Este debe ser tu primer contacto con los servicios de Alex Zapata, no puedes haber tenido relación previa con otro servicio, por ejemplo:
                   <ul className="list-disc pl-6 mt-2">
                     <li>Cursos</li>
                     <li>Talleres</li>
@@ -374,7 +374,7 @@ export default function ReferralForm({ onSuccess, onSkip }: ReferralFormProps) {
           <div className="space-y-4 max-h-[60vh] overflow-y-auto">
             <div className="space-y-4">
               <div className="bg-blue-50 p-4 rounded-lg">
-                <h3 className="font-semibold text-lg mb-2">Programa de Referidos BioEnneagram</h3>
+                <h3 className="font-semibold text-lg mb-2">Programa de Referidos Alex Zapata</h3>
                 <p className="text-sm mb-4">
                   Ayúdanos a crecer y recibe beneficios por cada referido que se una a nuestra comunidad.
                 </p>
