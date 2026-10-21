@@ -22,7 +22,7 @@ const Hero = () => {
                 <ul className="flex flex-wrap items-center">
                   <li>
                     <a
-                      href="/#"
+                      href="#"
                       className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 text-center text-base font-medium text-white hover:bg-blue-dark lg:px-7"
                     >
                       Get Started
@@ -30,7 +30,7 @@ const Hero = () => {
                   </li>
                   <li>
                     <a
-                      href="/#"
+                      href="#"
                       className="inline-flex items-center justify-center px-5 py-3 text-center text-base font-medium text-[#464646] hover:text-primary dark:text-white"
                     >
                       <span className="mr-2">
